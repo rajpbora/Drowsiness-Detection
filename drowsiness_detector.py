@@ -115,12 +115,27 @@ while(True):
     else:
         #If one of the or both eyes are open, decrease eye index by 1
         score=score-1
+
+
     if(score<0):
         score=0
         #If person is awake, no need for alarm
-        sound.fadeout(1)
+        sound.fadeout(1)    
+    #if sleepy for enough time, call emergency contact
+    elif(score>30):
+        #Glow the output feed window
+        if(border<16):
+            border= border+4
+        else:
+            border=border-2
+            if(border<2):
+                border=2
+        #Display Alert Message
+        cv2.putText(gray,'PARKING THE VEHICLE & CALLING YOUR EMERGENCY CONTACT',(70,100), font, 5,(0,0,255),1,cv2.LINE_AA)
+        cv2.rectangle(gray,(0,0),(width,height),(0,0,255),border)
+
     #If more than 800ms eye close, raise alarm
-    if(score>8):
+    elif(score>8):
         try:
             sound.play() 
         except:
@@ -138,12 +153,19 @@ while(True):
     elif(score>7):
         #Display Warning Message
         cv2.putText(gray,'WARNING',(100,130), font, 2,(255,0,0),1,cv2.LINE_AA)
+
+
+
+
     if(mar>0.34):
         #If MAR is more than 0.34, increase yawn index by 2
         yawn=yawn+2
     else:
         #If MAR is more than 0.34, decrease yawn index by 2
         yawn=yawn-1
+
+
+
     if(yawn<0):
         yawn=0
         #If no yawning, fadeout the alarm sound
